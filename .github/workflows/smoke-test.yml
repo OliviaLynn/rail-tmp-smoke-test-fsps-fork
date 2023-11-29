@@ -46,9 +46,9 @@ jobs:
       with:
         script: |
           if "SPS_HOME" not in os.environ:
-          os.environ["SPS_HOME"] = "/opt/hostedtoolcache/Python/fsps"
-          subprocess.run(["git", "clone", "https://github.com/cconroy20/fsps.git",
-                          "/opt/hostedtoolcache/Python/fsps"], capture_output=True)
+            os.environ["SPS_HOME"] = "/opt/hostedtoolcache/Python/fsps"
+            subprocess.run(["git", "clone", "https://github.com/cconroy20/fsps.git",
+                            "/opt/hostedtoolcache/Python/fsps"], capture_output=True)
     - name: Run notebooks
       run: |
         rail render-nb --skip examples/creation_examples/plotting_interface_skysim_cosmoDC2_COSMOS2020_demo.ipynb examples/${{ matrix.notebook-dir }}_examples/*.ipynb
