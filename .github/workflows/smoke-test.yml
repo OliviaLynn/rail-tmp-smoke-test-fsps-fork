@@ -51,7 +51,9 @@ jobs:
             os.environ["SPS_HOME"] = "/opt/hostedtoolcache/Python/fsps"
             subprocess.run(["git", "clone", "https://github.com/cconroy20/fsps.git",
                             "/opt/hostedtoolcache/Python/fsps"], capture_output=True)
-    - run: echo $SPS_HOME
+    - run: echo "$SPS_HOME"
+    - run: echo "SPS_HOME=/opt/hostedtoolcache/Python/fsps" >> $GITHUB_ENV
+    - run: echo ${{env.SPS_HOME}}
     - name: Run notebooks
       run: |
         rail render-nb examples/${{ matrix.notebook-dir }}_examples/*.ipynb
