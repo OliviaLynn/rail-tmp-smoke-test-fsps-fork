@@ -35,12 +35,12 @@ jobs:
     - name: Run unit tests with pytest
       run: |
         python -m pytest tests
-    - name: Set up fsps
-      run: |
-        git clone --recursive https://github.com/dfm/python-fsps.git
-        cd python-fsps
-        python -m pip install .
-        export SPS_HOME=$(pwd)/src/fsps/libfsps
+#    - name: Set up fsps
+#      run: |
+#        git clone --recursive https://github.com/dfm/python-fsps.git
+#        cd python-fsps
+#        python -m pip install .
+#        export SPS_HOME=$(pwd)/src/fsps/libfsps
     - name: More fsps set up
       uses: jannekem/run-python-script-action@v1
       with:
@@ -51,6 +51,7 @@ jobs:
             os.environ["SPS_HOME"] = "/opt/hostedtoolcache/Python/fsps"
             subprocess.run(["git", "clone", "https://github.com/cconroy20/fsps.git",
                             "/opt/hostedtoolcache/Python/fsps"], capture_output=True)
+    - run: echo $SPS_HOME
     - name: Run notebooks
       run: |
-        rail render-nb --skip examples/creation_examples/plotting_interface_skysim_cosmoDC2_COSMOS2020_demo.ipynb examples/${{ matrix.notebook-dir }}_examples/*.ipynb
+        rail render-nb examples/${{ matrix.notebook-dir }}_examples/*.ipynb
