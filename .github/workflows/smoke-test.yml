@@ -41,44 +41,14 @@ jobs:
         cd python-fsps
         python -m pip install .
         export SPS_HOME=$(pwd)/src/fsps/libfsps
+    - name: More fsps set up
+      uses: jannekem/run-python-script-action@v1
+      with:
+        script: |
+          if "SPS_HOME" not in os.environ:
+          os.environ["SPS_HOME"] = "/opt/hostedtoolcache/Python/fsps"
+          subprocess.run(["git", "clone", "https://github.com/cconroy20/fsps.git",
+                          "/opt/hostedtoolcache/Python/fsps"], capture_output=True)
     - name: Run notebooks
       run: |
         rail render-nb --skip examples/creation_examples/plotting_interface_skysim_cosmoDC2_COSMOS2020_demo.ipynb examples/${{ matrix.notebook-dir }}_examples/*.ipynb
-    - name: Send status to Slack app (RAIL CI Reporter)
-      if: ${{ failure() && github.event_name != 'workflow_dispatch' }}
-      id: slack
-      uses: slackapi/slack-github-action@v1.24.0
-      with:
-        # For posting a rich message using Block Kit
-        payload: |
-          {
-            "blocks": [
-              {
-                "type": "header",
-                "text": {
-                  "type": "plain_text",
-                  "text": "${{ github.repository }}"
-                }
-              },
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "GitHub Action build result: *${{ job.status }}* :${{ job.status }}:"
-                }
-              },
-              {
-                "type": "divider"
-              },
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                }
-              }
-            ]
-          }
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
