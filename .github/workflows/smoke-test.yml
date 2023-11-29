@@ -45,6 +45,8 @@ jobs:
       uses: jannekem/run-python-script-action@v1
       with:
         script: |
+          import os
+          import subprocess
           if "SPS_HOME" not in os.environ:
             os.environ["SPS_HOME"] = "/opt/hostedtoolcache/Python/fsps"
             subprocess.run(["git", "clone", "https://github.com/cconroy20/fsps.git",
