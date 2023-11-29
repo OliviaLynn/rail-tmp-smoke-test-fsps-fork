@@ -34,24 +34,10 @@ jobs:
     - name: Run unit tests with pytest
       run: |
         python -m pytest tests
-#    - name: Set up fsps
-#      run: |
-#        git clone --recursive https://github.com/dfm/python-fsps.git
-#        cd python-fsps
-#        python -m pip install .
-#        export SPS_HOME=$(pwd)/src/fsps/libfsps
-    - name: More fsps set up
-      uses: jannekem/run-python-script-action@v1
-      with:
-        script: |
-          import os
-          import subprocess
-          if "SPS_HOME" not in os.environ:
-            os.environ["SPS_HOME"] = "/opt/hostedtoolcache/Python/fsps"
-            subprocess.run(["git", "clone", "https://github.com/cconroy20/fsps.git",
-                            "/opt/hostedtoolcache/Python/fsps"], capture_output=True)
-    - run: echo "$SPS_HOME"
-    - run: echo "SPS_HOME=/opt/hostedtoolcache/Python/fsps" >> $GITHUB_ENV
+    - name: Set up fsps
+      run: |
+        git clone "https://github.com/cconroy20/fsps.git" "/opt/hostedtoolcache/Python/fsps"
+        echo "SPS_HOME=/opt/hostedtoolcache/Python/fsps" >> $GITHUB_ENV
     - run: echo ${{env.SPS_HOME}}
     - name: Run notebooks
       run: |
