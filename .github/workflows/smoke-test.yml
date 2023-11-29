@@ -34,9 +34,10 @@ jobs:
     - name: Run unit tests with pytest
       run: |
         python -m pytest tests
+    - run: ls /opt/hostedtoolcache/Python/
+#    - run: git clone "https://github.com/cconroy20/fsps.git" "/opt/hostedtoolcache/Python/fsps"
     - name: Set up fsps
       run: |
-        git clone "https://github.com/cconroy20/fsps.git" "/opt/hostedtoolcache/Python/fsps"
         echo "SPS_HOME=/opt/hostedtoolcache/Python/fsps" >> $GITHUB_ENV
     - run: echo ${{env.SPS_HOME}}
     - name: Run notebooks
